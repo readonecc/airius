@@ -1,0 +1,557 @@
+/* Airius Internal Portal - shared stylesheet (extracted from Stylesheet.html).
+   Host this on a CDN and reference it with <link rel=stylesheet>.
+   Keep in sync with the Apps Script Stylesheet.html if you change one. */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ============================================================
+     DESIGN TOKENS — diambil dari form Leave Request kamu.
+     Ini satu-satunya tempat untuk ubah warna/font di SEMUA halaman.
+     ============================================================ */
+  :root {
+    --navy:#0a1f44; --navy-mid:#0d2d6b; --blue:#1256cc; --blue-bright:#2e7cf6;
+    --blue-light:#dce9fd; --sky:#eef4ff;
+    /* Official brand gradient, taken from logo.svg: purple -> cyan */
+    --purple:#6a0de5; --purple-bright:#8b3df0; --purple-light:#ede2fb;
+    --cyan:#63f4eb; --cyan-deep:#64b8e9;
+    --white:#ffffff; --off-white:#f4f7fc; --muted:#6b7b99; --ink:#0d1b3e;
+    --border:rgba(18,86,204,0.13); --shadow:rgba(10,31,68,0.10);
+  }
+
+  /* ============================================================
+     BASE — dipakai oleh SEMUA halaman (hub, leave request, incident, dev, dst)
+     ============================================================ */
+  html, body{ background: var(--off-white); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; }
+
+  body{ position: relative; }
+  body::before{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(ellipse 70% 60% at 0% 0%, rgba(10,31,68,0.05) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 50% at 100% 100%, rgba(46,124,246,0.07) 0%, transparent 55%);
+  }
+
+  .wrap{ position:relative; z-index:1; max-width: 1080px; margin: 0 auto; padding: 64px 28px 96px; }
+
+  .status-badge{
+    display:inline-flex; align-items:center; gap:6px;
+    background: var(--blue-light); color: var(--blue);
+    font-size:0.7rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    padding:5px 12px; border-radius:100px;
+  }
+  .status-badge::before{
+    content:''; width:6px; height:6px; background: var(--blue-bright); border-radius:50%;
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  h1{
+    font-family:'Sora', sans-serif; font-weight:700;
+    font-size: clamp(2rem, 4vw, 2.65rem); letter-spacing:-0.01em;
+    color: var(--navy); margin: 18px 0 12px;
+  }
+  h1 .hi{
+    background: linear-gradient(120deg, var(--purple) 0%, #667be7 52%, var(--cyan) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+
+  .subtitle{ color: var(--muted); font-size: 1rem; line-height:1.6; max-width: 50ch; margin: 0; }
+
+  .status-row{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px 18px;
+    border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+    padding: 16px 2px; margin: 30px 0 44px;
+  }
+  .status-clock{ font-size:0.85rem; font-weight:600; color: var(--navy); }
+
+  @media (max-width: 700px){ .wrap{ padding: 44px 20px 72px; } }
+  @media (max-width: 560px){ .status-row{ font-size:0.8rem; } }
+
+  /* ---- Logo lockup (from Logo.html) ---- */
+  .brand-lockup{ display:inline-flex; align-items:center; gap:11px; font-size:1.5rem; line-height:1; }
+  .brand-mark{ width:1.15em; height:1.15em; flex-shrink:0; display:block; }
+  .brand-word{
+    font-family:'Sora', sans-serif; font-weight:700; letter-spacing:0.16em;
+    font-size:0.86em; color: currentColor;
+  }
+
+  /* ============================================================
+     HERO — elegant DARK, left-aligned banner at the top of every page.
+     Deep navy->black gradient with a soft brand glow and a faint dot
+     texture that fades out toward the lower-right. High-contrast text for
+     readability. No logo. Content lives in .hero__inner.
+     ============================================================ */
+  .hero{
+    position:relative; overflow:hidden; isolation:isolate;
+    width:100%; margin:0; color:#fff;
+    background: linear-gradient(165deg, #0c1226 0%, #080b16 56%, #05060d 100%);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  /* brand glow */
+  .hero::before{
+    content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      radial-gradient(44% 82% at 1% -12%, rgba(106,13,229,0.40) 0%, transparent 60%),
+      radial-gradient(34% 66% at 100% 122%, rgba(99,244,235,0.12) 0%, transparent 60%),
+      radial-gradient(30% 60% at 82% -12%, rgba(46,124,246,0.16) 0%, transparent 60%);
+  }
+  /* faint dot grid, strongest top-left then fading away */
+  .hero::after{
+    content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1.4px);
+    background-size: 22px 22px;
+    -webkit-mask-image: radial-gradient(80% 80% at 0% 0%, #000 0%, transparent 72%);
+            mask-image: radial-gradient(80% 80% at 0% 0%, #000 0%, transparent 72%);
+  }
+  .hero__inner{
+    position:relative; z-index:1;
+    max-width:1080px; margin:0 auto; padding:78px 28px 70px; text-align:left;
+  }
+  .hero--compact .hero__inner{ padding:56px 28px 54px; }
+
+  .hero__eyebrow{
+    display:inline-flex; align-items:center; gap:7px;
+    background: rgba(99,244,235,0.08); color: var(--cyan);
+    font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+    padding:6px 14px; border-radius:100px; box-shadow: inset 0 0 0 1px rgba(99,244,235,0.28);
+  }
+  .hero__eyebrow::before{
+    content:''; width:6px; height:6px; border-radius:50%; background: var(--cyan);
+    box-shadow:0 0 10px var(--cyan); animation: blink 2s ease-in-out infinite;
+  }
+
+  .hero h1{
+    color:#fff; margin:18px 0 0; max-width:20ch;
+    font-size: clamp(2.1rem, 4.8vw, 3rem); line-height:1.06; letter-spacing:-0.02em;
+    text-shadow:0 2px 30px rgba(0,0,0,0.45);
+  }
+  .hero .subtitle{ color: rgba(255,255,255,0.74); margin:14px 0 0; max-width:54ch; font-size:1rem; }
+
+  .hero__actions{ display:flex; flex-wrap:wrap; gap:12px; justify-content:flex-start; margin-top:26px; }
+  .btn-hero{
+    display:inline-flex; align-items:center; gap:9px;
+    font-family:'Plus Jakarta Sans', sans-serif; font-size:0.9rem; font-weight:700;
+    padding:12px 24px; border-radius:12px; text-decoration:none; cursor:pointer; border:none;
+    color:#fff; background: linear-gradient(135deg, var(--purple), var(--blue-bright) 70%, var(--cyan-deep));
+    box-shadow:0 8px 26px rgba(106,13,229,0.45); transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-hero:hover{ transform: translateY(-2px); box-shadow:0 12px 32px rgba(106,13,229,0.55); }
+  .btn-hero--ghost{
+    background: rgba(255,255,255,0.06); color:#fff;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.24);
+  }
+  .btn-hero--ghost:hover{ background: rgba(255,255,255,0.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.42); }
+
+  .ver-badge{
+    display:inline-block; margin-top:20px;
+    font-size:0.72rem; font-weight:700; letter-spacing:0.05em;
+    color: var(--cyan); background: rgba(99,244,235,0.08);
+    padding:5px 13px; border-radius:100px; box-shadow: inset 0 0 0 1px rgba(99,244,235,0.26);
+  }
+
+  @media (max-width: 560px){ .hero__inner{ padding:56px 20px 50px; } }
+  @media (prefers-reduced-motion: reduce){ .hero__eyebrow::before{ animation:none; } }
+
+  /* ============================================================
+     CHANGELOG — release history, shown on the dashboard.
+     ============================================================ */
+  .section-head{ font-family:'Sora', sans-serif; font-weight:700; font-size:1.25rem; color: var(--navy); margin:0 0 6px; }
+  .section-sub{ color: var(--muted); font-size:0.92rem; margin:0 0 22px; }
+
+  .changelog{ display:flex; flex-direction:column; gap:18px; }
+  .release{
+    background: var(--white); border-radius:18px; padding:22px 24px;
+    box-shadow: 0 2px 28px var(--shadow), 0 0 0 1px rgba(18,86,204,0.06);
+  }
+  .release__head{ display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:4px; }
+  .release__ver{ font-family:'Sora', sans-serif; font-weight:700; font-size:1.05rem; color: var(--navy); }
+  .release__title{ color: var(--ink); font-weight:600; font-size:0.92rem; }
+  .release__date{ color: var(--muted); font-size:0.8rem; margin-left:auto; }
+  .release__latest{
+    font-size:0.64rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;
+    color:#fff; background: linear-gradient(135deg, var(--purple), var(--cyan-deep));
+    padding:3px 9px; border-radius:100px;
+  }
+  .release__changes{ list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .change{ display:flex; align-items:flex-start; gap:11px; }
+  .change__type{
+    flex-shrink:0; min-width:74px; text-align:center;
+    font-size:0.64rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;
+    padding:3px 8px; border-radius:6px;
+  }
+  .change__text{ font-size:0.9rem; line-height:1.5; color: var(--ink); }
+
+  /* change-type colors */
+  .type-added{ color:#0a7d46; background:#e3f6ec; }
+  .type-fixed{ color: var(--blue); background: var(--blue-light); }
+  .type-removed{ color:#c0392b; background:#fde5e2; }
+  .type-improved{ color: var(--purple); background: var(--purple-light); }
+  .type-other{ color:#5b657a; background:#eef1f6; }
+
+  /* dashboard quick links */
+  .quick-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:18px; margin-bottom:46px; }
+  .quick-card{
+    display:flex; align-items:center; gap:14px; text-decoration:none;
+    background: var(--white); border-radius:16px; padding:18px 20px; color: inherit;
+    box-shadow: 0 2px 28px var(--shadow), 0 0 0 1px rgba(18,86,204,0.06);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .quick-card:hover{ transform: translateY(-3px); box-shadow: 0 10px 30px rgba(10,31,68,0.14), 0 0 0 1px rgba(18,86,204,0.12); }
+  .quick-card__icon{
+    width:42px; height:42px; flex-shrink:0; border-radius:11px; display:grid; place-items:center;
+    color:#fff; background: linear-gradient(135deg, var(--purple), var(--blue-bright));
+  }
+  .quick-card__title{ font-family:'Sora', sans-serif; font-weight:700; font-size:1rem; color: var(--navy); }
+  .quick-card__desc{ font-size:0.82rem; color: var(--muted); margin-top:2px; }
+
+  /* ============================================================
+     HUB ONLY — grid kartu tool. Kalau halaman lain (leave-request.html,
+     incident.html, dst) tidak pakai grid kartu, bagian ini tetap aman
+     diikutkan karena cuma aktif kalau class-nya dipakai.
+     ============================================================ */
+  .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+
+  .tool-card{
+    display:flex; flex-direction:column; justify-content:space-between;
+    min-height: 190px;
+    background: var(--white);
+    border-radius: 22px;
+    padding: 26px 24px;
+    text-decoration:none; color: inherit;
+    box-shadow: 0 2px 28px var(--shadow), 0 0 0 1px rgba(18,86,204,0.06);
+    position:relative;
+    opacity:0; transform: translateY(18px);
+    animation: up 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  @keyframes up{ from{ opacity:0; transform: translateY(18px); } to{ opacity:1; transform:none; } }
+
+  .tool-card:nth-child(1){ animation-delay: 0ms; }
+  .tool-card:nth-child(2){ animation-delay: 70ms; }
+  .tool-card:nth-child(3){ animation-delay: 140ms; }
+  .tool-card:nth-child(4){ animation-delay: 210ms; }
+  .tool-card:nth-child(5){ animation-delay: 260ms; }
+  .tool-card:nth-child(n+6){ animation-delay: 300ms; }
+
+  .tool-card:hover{ transform: translateY(-4px); box-shadow: 0 10px 32px rgba(10,31,68,0.16), 0 0 0 1px rgba(18,86,204,0.12); }
+  .tool-card:focus-visible{ outline:none; box-shadow: 0 0 0 3px rgba(46,124,246,0.18), 0 2px 28px var(--shadow); }
+
+  .tool-card.is-external:hover{ box-shadow: 0 10px 32px rgba(106,12,229,0.18), 0 0 0 1px rgba(106,12,229,0.18); }
+  .tool-card.is-external:focus-visible{ box-shadow: 0 0 0 3px rgba(106,12,229,0.2), 0 2px 28px var(--shadow); }
+
+  .tool-tag{
+    font-size:0.7rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    color: var(--blue); margin-bottom:14px;
+  }
+  .tool-card.is-external .tool-tag{ color: var(--purple); }
+
+  .tool-title{ font-family:'Sora', sans-serif; font-weight:700; font-size:1.2rem; color: var(--navy); margin:0 0 8px; }
+
+  .tool-desc{ font-size:0.9rem; line-height:1.5; color: var(--muted); margin:0; }
+
+  .tool-cta{
+    display:inline-flex; align-items:center; gap:7px;
+    width:fit-content; margin-top:20px;
+    padding:8px 14px; border-radius:10px;
+    font-size:0.8rem; font-weight:700; color:#fff;
+    background: linear-gradient(135deg, var(--blue), var(--blue-bright));
+    box-shadow: 0 3px 10px rgba(18,86,204,0.28);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .tool-card:hover .tool-cta{ transform: translateY(-1px); box-shadow: 0 6px 16px rgba(18,86,204,0.24); }
+
+  .tool-card.is-external .tool-cta{
+    background: linear-gradient(135deg, var(--purple), var(--purple-bright));
+    box-shadow: 0 3px 10px rgba(106,12,229,0.3);
+  }
+  .tool-card.is-external:hover .tool-cta{ box-shadow: 0 6px 16px rgba(106,12,229,0.26); }
+
+  .tool-cta svg{ transition: transform 0.2s ease; flex-shrink:0; }
+  .tool-card:hover .tool-cta svg{ transform: translate(2px, 0); }
+  .tool-card.is-external:hover .tool-cta svg{ transform: translate(1px, -1px); }
+
+  .ext-note{
+    margin-left:10px; font-size:0.7rem; font-weight:600; text-transform:uppercase;
+    letter-spacing:0.04em; color: var(--muted); align-self:center;
+  }
+
+  @media (max-width: 560px){ .grid{ grid-template-columns: 1fr; } }
+
+  @media (prefers-reduced-motion: reduce){
+    .tool-card{ animation:none; opacity:1; transform:none; }
+    .status-badge::before{ animation:none; }
+    .tool-card, .tool-cta, .tool-cta svg{ transition:none; }
+  }
+
+  /* ============================================================
+     BOOT / DEBUG OVERLAY — full-screen terminal-style loader shown
+     while the portal initializes. Toggled per page from the admin
+     dashboard. Dark on purpose (it mimics a service boot log) even though
+     the portal underneath is light. Scoped under .boot so it never
+     leaks into normal page styles.
+     ============================================================ */
+  .boot{
+    position:fixed; inset:0; z-index:9999;
+    background:#0b0e14; color:#e6e9ef;
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+    display:flex; flex-direction:column;
+    padding:34px 40px 28px;
+    overflow:hidden;
+    opacity:1; transition: opacity 0.3s ease;
+  }
+  .boot.is-done{ opacity:0; pointer-events:none; }
+
+  /* faint engineering grid, brighter toward the right (like the reference) */
+  .boot__grid{
+    position:absolute; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 96px 96px;
+    -webkit-mask-image: linear-gradient(to right, transparent 38%, #000 100%);
+            mask-image: linear-gradient(to right, transparent 38%, #000 100%);
+  }
+
+  .boot__brand{
+    position:relative; z-index:1;
+    display:flex; align-items:center; gap:10px;
+    font-family:'Sora', sans-serif; font-weight:700; font-size:1.15rem;
+    letter-spacing:0.01em; color:#fff; margin-bottom:30px;
+  }
+  .boot__mark{
+    width:16px; height:16px; border-radius:5px; flex-shrink:0;
+    background: linear-gradient(135deg, var(--blue-bright), var(--purple-bright));
+    box-shadow: 0 0 14px rgba(46,124,246,0.55);
+  }
+
+  .boot__log{
+    position:relative; z-index:1;
+    flex:1 1 auto; min-height:0; overflow:hidden;
+    font-size:0.86rem; line-height:1.05;
+    max-width: 760px;
+  }
+  .boot__line{
+    display:flex; gap:14px; align-items:baseline;
+    padding:7px 0; color:#aeb6c4;
+    letter-spacing:0.02em; text-transform:uppercase;
+    opacity:0; transform: translateY(4px);
+    animation: bootIn 0.28s ease forwards;
+  }
+  @keyframes bootIn{ to{ opacity:1; transform:none; } }
+  .boot__time{ color:#5b657a; flex-shrink:0; font-variant-numeric: tabular-nums; }
+  .boot__msg{ color:#c7cedb; }
+  .boot__line.is-ok .boot__msg{ color:#7fe3a3; }
+  .boot__line.is-err .boot__msg{ color:#ff7a7a; }
+  .boot__line.is-detail .boot__msg{ color:#8a93a6; text-transform:none; letter-spacing:0; }
+
+  .boot__art{
+    position:relative; z-index:1;
+    margin:18px 0; padding:18px 22px;
+    border:1px dashed rgba(255,255,255,0.18);
+    color:#7d879b; font-size:0.62rem; line-height:1.15;
+    width:fit-content; white-space:pre; overflow:hidden;
+    opacity:0; animation: bootIn 0.4s ease forwards;
+  }
+
+  .boot__footer{
+    position:relative; z-index:1;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
+    margin-top:18px; padding-top:18px;
+  }
+  .boot__cta{
+    font-size:0.8rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase;
+    color: var(--blue-bright); text-decoration:none;
+  }
+  .boot__cta:hover{ color:#fff; }
+  .boot__status{
+    display:flex; align-items:center; gap:10px;
+    font-size:0.8rem; letter-spacing:0.06em; text-transform:uppercase; color:#aeb6c4;
+  }
+  .boot__spinner{
+    width:14px; height:14px; border-radius:50%;
+    border:2px solid rgba(255,255,255,0.2); border-top-color:#fff;
+    animation: bootSpin 0.8s linear infinite;
+  }
+  @keyframes bootSpin{ to{ transform: rotate(360deg); } }
+
+  @media (max-width: 640px){
+    .boot{ padding:24px 20px; }
+    .boot__art{ font-size:0.48rem; padding:12px 14px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .boot__spinner{ animation:none; }
+    .boot__line, .boot__art{ animation:none; opacity:1; transform:none; }
+    .boot{ transition:none; }
+  }
+
+  /* ============================================================
+     ADMIN ONLY — admin dashboard (user roles + portal settings).
+     Light mode, consistent with the rest of the portal.
+     ============================================================ */
+  .adm-grid{ display:grid; grid-template-columns: 1fr; gap:22px; }
+
+  .adm-card{
+    background: var(--white); border-radius:20px; padding:26px 26px 28px;
+    box-shadow: 0 2px 28px var(--shadow), 0 0 0 1px rgba(18,86,204,0.06);
+  }
+  .adm-card__title{
+    font-family:'Sora', sans-serif; font-weight:700; font-size:1.05rem;
+    color: var(--navy); margin:0 0 4px;
+  }
+  .adm-card__hint{ font-size:0.85rem; color: var(--muted); margin:0 0 18px; }
+
+  .adm-row{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+
+  /* toggle switch */
+  .switch{ position:relative; display:inline-flex; align-items:center; gap:12px; cursor:pointer; user-select:none; }
+  .switch input{ position:absolute; opacity:0; width:0; height:0; }
+  .switch__track{
+    width:48px; height:27px; border-radius:100px; background:#cfd8e6; position:relative;
+    transition: background 0.2s ease; flex-shrink:0;
+  }
+  .switch__track::after{
+    content:''; position:absolute; top:3px; left:3px; width:21px; height:21px; border-radius:50%;
+    background:#fff; box-shadow:0 1px 3px rgba(10,31,68,0.3); transition: transform 0.2s ease;
+  }
+  .switch input:checked + .switch__track{ background: var(--blue); }
+  .switch input:checked + .switch__track::after{ transform: translateX(21px); }
+  .switch input:focus-visible + .switch__track{ box-shadow:0 0 0 3px rgba(46,124,246,0.25); }
+  .switch__state{ font-size:0.82rem; font-weight:700; color: var(--navy); min-width:34px; }
+
+  /* per-page boot toggle list */
+  .boot-row{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:14px 0; border-bottom:1px solid var(--border);
+  }
+  .boot-row:last-child{ border-bottom:none; }
+  .boot-row__title{ font-weight:600; color: var(--navy); }
+  .boot-row__key{ font-size:0.78rem; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; margin-top:2px; }
+
+  /* form fields */
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:0.74rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color: var(--muted); }
+  .field input, .field select{
+    font-family: inherit; font-size:0.9rem; color: var(--ink);
+    padding:10px 12px; border-radius:10px; border:1px solid var(--border); background: var(--white);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .field input:focus, .field select:focus{
+    outline:none; border-color: var(--blue-bright); box-shadow:0 0 0 3px rgba(46,124,246,0.14);
+  }
+
+  .adm-form{ display:grid; grid-template-columns: 1.2fr 1.6fr 1fr auto; gap:14px; align-items:end; }
+  @media (max-width: 760px){ .adm-form{ grid-template-columns: 1fr; } }
+
+  .btn{
+    font-family: inherit; font-size:0.85rem; font-weight:700; color:#fff; cursor:pointer;
+    padding:10px 18px; border-radius:10px; border:none;
+    background: linear-gradient(135deg, var(--blue), var(--blue-bright));
+    box-shadow:0 3px 10px rgba(18,86,204,0.28); transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); box-shadow:0 6px 16px rgba(18,86,204,0.24); }
+  .btn:disabled{ opacity:0.55; cursor:not-allowed; transform:none; box-shadow:none; }
+  .btn--ghost{
+    background:transparent; color: var(--blue); box-shadow: inset 0 0 0 1px var(--border);
+  }
+  .btn--danger{ background:transparent; color:#d8443c; box-shadow: inset 0 0 0 1px rgba(216,68,60,0.3); padding:7px 12px; font-size:0.78rem; }
+  .btn--danger:hover{ background: rgba(216,68,60,0.07); box-shadow: inset 0 0 0 1px rgba(216,68,60,0.45); }
+
+  /* users table */
+  .adm-table{ width:100%; border-collapse: collapse; font-size:0.88rem; }
+  .adm-table th{
+    text-align:left; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em;
+    color: var(--muted); font-weight:700; padding:0 12px 12px; border-bottom:1px solid var(--border);
+  }
+  .adm-table td{ padding:12px; border-bottom:1px solid var(--border); vertical-align:middle; color: var(--ink); }
+  .adm-table tr:last-child td{ border-bottom:none; }
+  .adm-table .col-email{ font-weight:600; color: var(--navy); }
+  .adm-table select{ padding:7px 10px; border-radius:8px; border:1px solid var(--border); font-family:inherit; font-size:0.85rem; }
+  .adm-empty{ color: var(--muted); font-size:0.9rem; padding:18px 2px; }
+
+  .role-pill{
+    display:inline-block; font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;
+    color: var(--blue); background: var(--blue-light); padding:3px 10px; border-radius:100px;
+  }
+  .role-pill.is-admin{ color: var(--purple); background: var(--purple-light); }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{ font-size:0.78rem; font-weight:600; color: var(--navy); background: var(--sky); border:1px solid var(--border); padding:5px 12px; border-radius:100px; }
+
+  /* toast */
+  .toast{
+    position:fixed; left:50%; bottom:26px; transform: translateX(-50%) translateY(20px);
+    background: var(--navy); color:#fff; font-size:0.85rem; font-weight:600;
+    padding:12px 20px; border-radius:12px; box-shadow:0 8px 30px rgba(10,31,68,0.3);
+    opacity:0; pointer-events:none; transition: opacity 0.25s ease, transform 0.25s ease; z-index:10000;
+  }
+  .toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
+  .toast.is-err{ background:#b3322b; }
+
+  .adm-notice{
+    background: var(--white); border-radius:20px; padding:30px 28px;
+    box-shadow: 0 2px 28px var(--shadow), 0 0 0 1px rgba(18,86,204,0.06);
+    text-align:center; color: var(--muted);
+  }
+  .adm-notice strong{ color: var(--navy); }
+
+  /* ============================================================
+     FOOTER — elegant dark footer. Lives on its own page (?page=footer)
+     so it can be embedded by URL at the bottom of each Google Sites page.
+     Not a landmark <footer> element (those are avoided per project rule);
+     it is a plain .ft container.
+     ============================================================ */
+  .ft{
+    position:relative; overflow:hidden; width:100%;
+    background: linear-gradient(180deg, #080b16 0%, #05060d 100%);
+    color: rgba(255,255,255,0.7);
+    border-top:1px solid rgba(255,255,255,0.08);
+  }
+  .ft::before{ /* thin brand gradient line along the very top */
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, rgba(106,13,229,0.65), rgba(99,244,235,0.5), transparent);
+  }
+  .ft::after{ /* soft brand glow, upper-left */
+    content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background: radial-gradient(52% 130% at 8% 0%, rgba(106,13,229,0.16) 0%, transparent 60%);
+  }
+  .ft__inner{ position:relative; z-index:1; max-width:1080px; margin:0 auto; padding:54px 28px 26px; }
+
+  .ft__top{ display:flex; flex-wrap:wrap; gap:40px 56px; justify-content:space-between; }
+  .ft__brand{ max-width:320px; }
+  .ft__logo{ display:inline-flex; color:#fff; }
+  .ft__logo .brand-lockup{ font-size:1.3rem; }
+  .ft__tag{ margin-top:14px; font-size:0.88rem; line-height:1.65; color: rgba(255,255,255,0.58); }
+
+  .ft__cols{ display:flex; flex-wrap:wrap; gap:48px; }
+  .ft__col{ display:flex; flex-direction:column; gap:11px; min-width:128px; }
+  .ft__col h3{
+    font-family:'Sora', sans-serif; font-size:0.72rem; font-weight:700;
+    letter-spacing:0.08em; text-transform:uppercase; color: var(--cyan); margin:0 0 5px;
+  }
+  .ft__col a{
+    color: rgba(255,255,255,0.66); text-decoration:none; font-size:0.9rem; width:fit-content;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+  .ft__col a:hover{ color:#fff; transform: translateX(2px); }
+
+  .ft__bar{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    margin-top:42px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08);
+    font-size:0.82rem; color: rgba(255,255,255,0.5);
+  }
+  .ft__ver{
+    color: var(--cyan); font-weight:700; letter-spacing:0.03em;
+    background: rgba(99,244,235,0.08); padding:3px 11px; border-radius:100px;
+    box-shadow: inset 0 0 0 1px rgba(99,244,235,0.22);
+  }
+
+  /* simple (current) variant — centered: logo + address + copyright, no menu */
+  .ft--simple .ft__inner{ text-align:center; padding:42px 28px 26px; }
+  .ft--simple .ft__logo{ display:inline-flex; }
+  .ft--simple .ft__bar{ justify-content:center; margin-top:24px; padding-top:18px; }
+  .ft__addr{ margin:16px 0 0; font-size:0.9rem; line-height:1.6; color: rgba(255,255,255,0.62); }
+
+  @media (max-width: 560px){ .ft__inner{ padding:40px 20px 22px; } .ft__top{ gap:30px; } }
