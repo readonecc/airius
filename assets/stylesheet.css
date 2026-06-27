@@ -7,8 +7,8 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   /* ============================================================
-     DESIGN TOKENS — diambil dari form Leave Request kamu.
-     Ini satu-satunya tempat untuk ubah warna/font di SEMUA halaman.
+     DESIGN TOKENS — taken from the Leave Request form.
+     This is the single place to change colors/fonts across ALL pages.
      ============================================================ */
   :root {
     --navy:#0a1f44; --navy-mid:#0d2d6b; --blue:#1256cc; --blue-bright:#2e7cf6;
@@ -21,7 +21,7 @@
   }
 
   /* ============================================================
-     BASE — dipakai oleh SEMUA halaman (hub, leave request, incident, dev, dst)
+     BASE — used by ALL pages (hub, leave request, incident, dev, etc.)
      ============================================================ */
   html, body{ background: var(--off-white); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; }
 
@@ -208,9 +208,9 @@
   .quick-card__desc{ font-size:0.82rem; color: var(--muted); margin-top:2px; }
 
   /* ============================================================
-     HUB ONLY — grid kartu tool. Kalau halaman lain (leave-request.html,
-     incident.html, dst) tidak pakai grid kartu, bagian ini tetap aman
-     diikutkan karena cuma aktif kalau class-nya dipakai.
+     HUB ONLY — tool card grid. If other pages (leave-request.html,
+     incident.html, etc.) don't use the card grid, this section is still
+     safe to include because it only applies when its classes are used.
      ============================================================ */
   .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
 
