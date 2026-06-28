@@ -412,28 +412,36 @@
   .value__title{ font-weight:700; color: var(--navy); font-size:0.95rem; }
   .value__desc{ font-size:0.84rem; line-height:1.5; color: var(--muted); margin-top:2px; }
 
-  /* mission / quote panel (dark) */
+  /* mission / quote panel (dark, editorial) */
   .statement{
-    position:relative; overflow:hidden; border-radius:24px; padding:48px 44px; color:#fff;
+    position:relative; overflow:hidden; border-radius:24px; padding:54px 52px; color:#fff;
     background: linear-gradient(160deg, #11152a 0%, #0a0c18 52%, #05060d 100%);
-    box-shadow: 0 24px 60px rgba(8,6,24,0.28), 0 0 0 1px rgba(106,13,229,0.18);
+    box-shadow: 0 24px 60px rgba(8,6,24,0.30), 0 0 0 1px rgba(255,255,255,0.06);
   }
   .statement::before{
     content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
     background:
-      radial-gradient(60% 120% at 100% 0%, rgba(106,13,229,0.38), transparent 60%),
-      radial-gradient(50% 100% at 0% 100%, rgba(99,244,235,0.12), transparent 60%);
+      radial-gradient(55% 120% at 100% 0%, rgba(106,13,229,0.34), transparent 60%),
+      radial-gradient(45% 100% at 0% 100%, rgba(99,244,235,0.10), transparent 60%);
   }
-  .statement__inner{ position:relative; z-index:1; max-width:64ch; }
+  .statement::after{ /* faint editorial quotation mark */
+    content:'\201C'; position:absolute; top:4px; left:30px; z-index:0; pointer-events:none;
+    font-family: Georgia, 'Times New Roman', serif; font-size:9rem; line-height:1;
+    color: rgba(255,255,255,0.07);
+  }
+  .statement__inner{ position:relative; z-index:1; max-width:60ch; }
   .statement__label{
-    display:inline-block; font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
-    color: var(--cyan); margin-bottom:14px;
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:0.7rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color: var(--cyan);
+    margin-bottom:18px;
   }
+  .statement__label::before{ content:''; width:24px; height:2px; border-radius:2px; background: linear-gradient(90deg, var(--purple), var(--cyan)); }
   .statement__text{
-    font-family:'Sora', sans-serif; font-weight:600; font-size: clamp(1.12rem, 2.1vw, 1.45rem);
-    line-height:1.55; color:#fff; margin:0;
+    font-family:'Plus Jakarta Sans', sans-serif; font-weight:400;
+    font-size: clamp(1.02rem, 1.35vw, 1.2rem); line-height:1.75; letter-spacing:0.005em;
+    color: rgba(255,255,255,0.82); margin:0;
   }
-  @media (max-width: 560px){ .statement{ padding:34px 24px; } }
+  @media (max-width: 560px){ .statement{ padding:38px 26px; } .statement::after{ font-size:7rem; left:18px; } }
 
   /* ============================================================
      BOOT / DEBUG OVERLAY — full-screen terminal-style loader shown
