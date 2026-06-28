@@ -373,6 +373,59 @@
   @media (prefers-reduced-motion: reduce){ .link-tile, .link-tile__icon, .link-tile__arrow{ transition:none; } }
 
   /* ============================================================
+     HOME PAGE — feature cards, mission statement, hero framework chips.
+     ============================================================ */
+  .hero__chips{ display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-start; margin-top:24px; }
+  .hero__chip{
+    font-size:0.72rem; font-weight:700; letter-spacing:0.04em;
+    color: rgba(255,255,255,0.86); background: rgba(255,255,255,0.07);
+    padding:5px 12px; border-radius:100px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.16);
+  }
+
+  .feature-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(252px, 1fr)); gap:18px; }
+  .feature-card{
+    background: var(--white); border-radius:18px; padding:24px 22px;
+    box-shadow: 0 2px 28px var(--shadow), 0 0 0 1px rgba(18,86,204,0.06);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .feature-card:hover{ transform: translateY(-4px); box-shadow: 0 12px 30px rgba(10,31,68,0.14), 0 0 0 1px rgba(18,86,204,0.12); }
+  .feature-card__icon{
+    width:46px; height:46px; border-radius:13px; display:grid; place-items:center; color:#fff;
+    background: linear-gradient(135deg, var(--purple), var(--blue-bright)); margin-bottom:16px;
+    box-shadow: 0 6px 16px rgba(106,13,229,0.28);
+  }
+  .feature-card__title{ font-family:'Sora', sans-serif; font-weight:700; font-size:1.05rem; color: var(--navy); margin:0 0 8px; }
+  .feature-card__desc{ font-size:0.9rem; line-height:1.6; color: var(--muted); margin:0; }
+
+  /* compact variant for company values */
+  .feature-card--value{ padding:20px; }
+  .feature-card--value .feature-card__icon{ width:34px; height:34px; border-radius:10px; margin-bottom:12px; background: linear-gradient(135deg, var(--blue), var(--cyan-deep)); }
+  .feature-card--value .feature-card__title{ font-size:0.98rem; }
+
+  /* mission / quote panel (dark) */
+  .statement{
+    position:relative; overflow:hidden; border-radius:24px; padding:48px 44px; color:#fff;
+    background: linear-gradient(160deg, #11152a 0%, #0a0c18 52%, #05060d 100%);
+    box-shadow: 0 24px 60px rgba(8,6,24,0.28), 0 0 0 1px rgba(106,13,229,0.18);
+  }
+  .statement::before{
+    content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(60% 120% at 100% 0%, rgba(106,13,229,0.38), transparent 60%),
+      radial-gradient(50% 100% at 0% 100%, rgba(99,244,235,0.12), transparent 60%);
+  }
+  .statement__inner{ position:relative; z-index:1; max-width:64ch; }
+  .statement__label{
+    display:inline-block; font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+    color: var(--cyan); margin-bottom:14px;
+  }
+  .statement__text{
+    font-family:'Sora', sans-serif; font-weight:600; font-size: clamp(1.12rem, 2.1vw, 1.45rem);
+    line-height:1.55; color:#fff; margin:0;
+  }
+  @media (max-width: 560px){ .statement{ padding:34px 24px; } }
+
+  /* ============================================================
      BOOT / DEBUG OVERLAY — full-screen terminal-style loader shown
      while the portal initializes. Toggled per page from the admin
      dashboard. Dark on purpose (it mimics a service boot log) even though
