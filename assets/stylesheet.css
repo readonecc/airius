@@ -305,6 +305,61 @@
   }
 
   /* ============================================================
+     LINK SECTIONS — category sections with a responsive grid of compact
+     link tiles. Used by the Staff Tools page (reusable for similar pages).
+     ============================================================ */
+  .tool-section{ margin:0 0 48px; }
+  .tool-section:last-child{ margin-bottom:0; }
+  .tool-section__head{ margin:0 0 20px; }
+  .tool-section__title{
+    display:flex; align-items:center; gap:12px;
+    font-family:'Sora', sans-serif; font-weight:700; font-size:1.25rem; color: var(--navy); margin:0;
+  }
+  .tool-section__title::before{
+    content:''; width:6px; height:22px; border-radius:100px; flex-shrink:0;
+    background: linear-gradient(180deg, var(--purple), var(--cyan-deep));
+  }
+  .tool-section__desc{ color: var(--muted); font-size:0.92rem; line-height:1.6; margin:10px 0 0; max-width:74ch; }
+
+  .link-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(224px, 1fr)); gap:14px; }
+
+  .link-tile{
+    position:relative; display:flex; flex-direction:column; gap:5px;
+    padding:16px 18px; border-radius:14px; text-decoration:none; color: inherit;
+    background: var(--white); box-shadow: 0 1px 16px var(--shadow), 0 0 0 1px rgba(18,86,204,0.06);
+    overflow:hidden; transition: transform 0.16s ease, box-shadow 0.16s ease;
+  }
+  .link-tile::before{
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background: linear-gradient(180deg, var(--blue-bright), var(--cyan-deep));
+    opacity:0; transition: opacity 0.16s ease;
+  }
+  .link-tile:hover{ transform: translateY(-3px); box-shadow: 0 8px 26px rgba(10,31,68,0.14), 0 0 0 1px rgba(18,86,204,0.12); }
+  .link-tile:hover::before{ opacity:1; }
+  .link-tile:focus-visible{ outline:none; box-shadow: 0 0 0 3px rgba(46,124,246,0.2), 0 1px 16px var(--shadow); }
+
+  .link-tile__name{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:8px;
+    font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; font-size:0.95rem; color: var(--navy); line-height:1.3;
+  }
+  .link-tile__arrow{
+    flex-shrink:0; margin-top:2px; color: var(--blue-bright);
+    opacity:0; transform: translate(-2px, 2px); transition: opacity 0.16s ease, transform 0.16s ease;
+  }
+  .link-tile:hover .link-tile__arrow{ opacity:1; transform: none; }
+  .link-tile__note{ font-size:0.78rem; line-height:1.5; color: var(--muted); }
+
+  .link-tile__badge{
+    align-self:flex-start; margin-top:2px;
+    font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;
+    color:#fff; background: linear-gradient(135deg, var(--purple), var(--blue-bright));
+    padding:2px 8px; border-radius:100px;
+  }
+
+  @media (max-width: 480px){ .link-grid{ grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce){ .link-tile, .link-tile__arrow{ transition:none; } }
+
+  /* ============================================================
      BOOT / DEBUG OVERLAY — full-screen terminal-style loader shown
      while the portal initializes. Toggled per page from the admin
      dashboard. Dark on purpose (it mimics a service boot log) even though
